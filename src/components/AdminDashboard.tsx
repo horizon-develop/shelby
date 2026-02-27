@@ -75,7 +75,7 @@ export default function AdminDashboard() {
             Panel de Turnos
           </h2>
           <p className="text-[#D8C3A5] mt-2">
-            Gestioná todos los turnos del salón
+            Gestiona todos los turnos del salón
           </p>
         </div>
         <div className="flex gap-4 flex-wrap">
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
             <form onSubmit={handleStoreClosureSubmit}>
               <div className="mb-4">
                 <p className="text-sm text-[#D8C3A5] mb-2">
-                  Seleccioná la fecha en la que el local estará cerrado
+                  Selecciona la fecha en la que el local estará cerrado
                 </p>
                 <div className="border border-[#D8C3A5]/20 rounded-lg p-4 bg-[#080808] text-[#AE7E50]">
                   <DayPicker
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
                           : storeClosureData.endTime,
                       });
                     }}
-                    className="rounded border-[#D8C3A5]/20 text-[#AF9A70] focus:ring-[#AF9A70] mr-2"
+                    className="rounded border-[#D8C3A5]/20 text-primary-light focus:ring-primary-light mr-2"
                   />
                   Cerrar todo el día
                 </label>
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
                     </label>
                     <input
                       type="time"
-                      className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                      className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                       value={storeClosureData.startTime}
                       onChange={(e) =>
                         setStoreClosureData({
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
                     </label>
                     <input
                       type="time"
-                      className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                      className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                       value={storeClosureData.endTime}
                       onChange={(e) =>
                         setStoreClosureData({
@@ -198,7 +198,7 @@ export default function AdminDashboard() {
                 </label>
                 <input
                   type="text"
-                  className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                  className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                   value={storeClosureData.reason}
                   onChange={(e) =>
                     setStoreClosureData({
@@ -267,7 +267,7 @@ export default function AdminDashboard() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-[#080808] divide-y divide-[#CACABC]">
+            <tbody className="bg-[#080808] divide-y divide-accent-light">
               {appointments?.map((booking) => (
                 <tr key={booking.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -385,7 +385,7 @@ export default function AdminDashboard() {
               </label>
               <select
                 id="stylist"
-                className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                 value={unavailabilityData.stylistId}
                 onChange={(e) =>
                   setUnavailabilityData({
@@ -406,7 +406,7 @@ export default function AdminDashboard() {
 
             <div className="mt-4">
               <p className="text-sm text-[#D8C3A5] mb-4">
-                Seleccioná la fecha en la que el peluquero no estará disponible
+                Selecciona la fecha en la que el peluquero no estará disponible
               </p>
               <div className="rounded-lg p-4 text-[#D8C3A5] bg-[#080808] border border-[#D8C3A5]/20">
                 <DayPicker
@@ -442,7 +442,7 @@ export default function AdminDashboard() {
                         : unavailabilityData.endTime,
                     });
                   }}
-                  className="rounded border-[#D8C3A5]/20 text-[#AF9A70] focus:ring-[#AF9A70] mr-2"
+                  className="rounded border-[#D8C3A5]/20 text-primary-light focus:ring-primary-light mr-2"
                 />
                 Todo el día
               </label>
@@ -456,7 +456,7 @@ export default function AdminDashboard() {
                   </label>
                   <input
                     type="time"
-                    className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                    className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                     value={unavailabilityData.startTime}
                     onChange={(e) =>
                       setUnavailabilityData({
@@ -473,7 +473,7 @@ export default function AdminDashboard() {
                   </label>
                   <input
                     type="time"
-                    className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                    className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                     value={unavailabilityData.endTime}
                     onChange={(e) =>
                       setUnavailabilityData({
@@ -497,7 +497,7 @@ export default function AdminDashboard() {
               <input
                 type="text"
                 id="reason"
-                className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-[#AF9A70] focus:ring-[#AF9A70]"
+                className="mt-1 block w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] shadow-sm focus:border-primary-light focus:ring-primary-light"
                 value={unavailabilityData.reason}
                 onChange={(e) =>
                   setUnavailabilityData({
