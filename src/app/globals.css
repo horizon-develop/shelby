@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: var(--font-sans), "Inter", sans-serif;
+  --font-serif: var(--font-serif), "Cormorant Garamond", serif;
 
   --color-primary-light: #AF9A70;
   --color-primary-dark: #000000;
@@ -13,6 +13,27 @@
   --color-accent-light: #CACABC;
   --color-accent-dark: #242424;
   --color-navy: #1B2845;
+
+  /* Landing page color system */
+  --color-background: hsl(0 0% 0%);
+  --color-foreground: hsl(35 40% 75%);
+  --color-card: hsl(0 0% 5%);
+  --color-card-foreground: hsl(35 40% 75%);
+  --color-popover: hsl(0 0% 5%);
+  --color-popover-foreground: hsl(35 40% 75%);
+  --color-primary: hsl(30 47% 52%);
+  --color-primary-foreground: hsl(0 0% 0%);
+  --color-secondary: hsl(220 36% 18%);
+  --color-secondary-foreground: hsl(35 40% 75%);
+  --color-muted: hsl(220 36% 13%);
+  --color-muted-foreground: hsl(30 25% 60%);
+  --color-accent: hsl(30 40% 25%);
+  --color-accent-foreground: hsl(35 40% 75%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 0%);
+  --color-border: hsl(30 30% 20%);
+  --color-input: hsl(30 30% 20%);
+  --color-ring: hsl(30 47% 52%);
 }
 
 @layer base {
@@ -22,16 +43,35 @@
   }
 
   html {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 
   .font-serif {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
+  }
+
+  * {
+    border-color: hsl(30 30% 20%);
+  }
+
+  body {
+    background-color: hsl(0 0% 0%);
+    color: hsl(35 40% 75%);
   }
 }
 
 body {
   @apply antialiased;
+}
+
+/* Container utility for landing page */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-width: 1400px;
 }
 
 /* react-day-picker v9 styles */
@@ -70,6 +110,23 @@ body {
   font-weight: bold;
 }
 
+.rdp-button_previous,
+.rdp-button_next,
+.rdp-button_previous svg,
+.rdp-button_next svg,
+.rdp-chevron {
+  color: #AE7E50 !important;
+  fill: #AE7E50 !important;
+}
+
+.rdp-button_previous:hover,
+.rdp-button_next:hover,
+.rdp-button_previous:hover svg,
+.rdp-button_next:hover svg {
+  color: #D8C3A5 !important;
+  fill: #D8C3A5 !important;
+}
+
 /* Efectos de brillo cobrizo */
 @layer utilities {
   .bronze-glow {
@@ -94,5 +151,13 @@ body {
   .bronze-button:disabled {
     @apply opacity-50;
     box-shadow: none;
+  }
+
+  .copper-gradient {
+    background-image: linear-gradient(to bottom, #683c2d, #b68350);
+  }
+
+  .bronze-text-shadow {
+    text-shadow: 0 0 10px rgba(182, 131, 80, 0.5);
   }
 }

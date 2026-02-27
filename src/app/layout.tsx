@@ -1,65 +1,95 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
-import Providers from "@/components/Providers";
-import Navbar from "@/components/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
 });
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-cormorant",
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
-  title: "Shelby - Reserva tu turno online",
+  title: {
+    default: "Shelby peluquería",
+    template: "%s | Shelby peluquería",
+  },
   description:
-    "Reserva tu turno en Shelby de forma rápida y sencilla. Sistema de turnos online disponible 24/7.",
-  keywords:
-    "shelby, turnos, reservas, barbería, peluquería, citas online",
-  authors: [{ name: "Shelby" }],
+    "Reservar turno de peluquería en Shelby. Cortes, peinados y tratamientos capilares profesionales.",
+  keywords: [
+    "peluquería",
+    "shelby",
+    "turno de peluquería",
+    "reservar turno peluquería",
+    "peluquería corrientes",
+    "turnos peluquería",
+    "reserva de turnos peluquería",
+    "corte de pelo",
+    "salón de belleza",
+    "estilista",
+    "peluquero profesional",
+    "corte y peinado",
+    "tratamientos capilares",
+    "reservar turno online",
+    "app peluquería",
+    "turnos online peluquería",
+    "agenda peluquería",
+    "shelby peluquería",
+    "shelby corrientes",
+  ],
+  authors: [{ name: "Alan Kennedy", url: "https://alankke.github.io/" }],
+  creator: "Alan Kennedy",
   metadataBase: new URL("https://shelbyturnos.vercel.app"),
   openGraph: {
     type: "website",
+    locale: "es_AR",
     url: "https://shelbyturnos.vercel.app",
-    title: "Shelby - Reserva tu turno online",
+    title: "Shelby Peluquería",
     description:
-      "Reserva tu turno en Shelby de forma rápida y sencilla. Sistema de turnos online disponible 24/7.",
+      "Reservar turno de peluquería en Shelby. Cortes, peinados y tratamientos capilares profesionales.",
+    siteName: "Shelby Peluquería",
     images: [
       {
         url: "/shelby-logo.jpg",
         width: 1200,
         height: 630,
+        alt: "Shelby Peluquería",
       },
     ],
-    locale: "es_AR",
-    siteName: "Shelby Turnos",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shelby - Reserva tu turno online",
+    title: "Shelby Peluquería",
     description:
-      "Reserva tu turno en Shelby de forma rápida y sencilla. Sistema de turnos online disponible 24/7.",
+      "Reservar turno de peluquería en Shelby. Cortes, peinados y tratamientos capilares profesionales.",
     images: ["/shelby-logo.jpg"],
   },
   icons: {
     icon: [
-      { url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      {
+        url: "/favicon/favicon-96x96.png",
+        sizes: "96x96",
+        type: "image/png",
+      },
       { url: "/favicon/favicon.svg", type: "image/svg+xml" },
     ],
     shortcut: "/favicon/favicon.ico",
     apple: "/favicon/apple-touch-icon.png",
   },
   manifest: "/favicon/site.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+  },
   other: {
     "theme-color": "#080808",
     "msapplication-TileColor": "#080808",
-    "apple-mobile-web-app-title": "Shelby Turnos",
+    "apple-mobile-web-app-title": "Shelby",
   },
 };
 
@@ -69,16 +99,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${cormorant.variable} font-sans`}
+        className={`${inter.variable} ${cormorant.variable} font-sans antialiased`}
       >
-        <Providers>
-          <div className="min-h-screen bg-stone-900 font-sans">
-            <Navbar />
-            <main className="py-10">{children}</main>
-          </div>
-        </Providers>
+        {children}
         <SpeedInsights />
       </body>
     </html>

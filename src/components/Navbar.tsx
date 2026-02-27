@@ -31,7 +31,7 @@ export default function Navbar() {
             </div>
             <div className="flex items-center sm:space-x-4">
               <Link
-                href="/"
+                href="/reservar"
                 className="text-xs text-center text-[#d8C3A5] hover:text-[#987347] transition-colors font-medium sm:text-sm"
               >
                 RESERVAR TURNO
