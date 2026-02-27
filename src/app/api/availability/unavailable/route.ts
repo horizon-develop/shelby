@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stylistAbsenceSchema } from "@/lib/validations";
 
+export async function GET() {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  const absences = await prisma.stylistAbsence.findMany({
+    where: { date: { gte: today } },
+    include: { stylist: { select: { name: true } } },
+    orderBy: { date: "asc" },
+  });
+
+  const formatted = absences.map((a) => ({
+    ...a,
+    date: a.date.toISOString().split("T")[0],
+  }));
+
+  return NextResponse.json(formatted);
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parsed = stylistAbsenceSchema.safeParse(body);

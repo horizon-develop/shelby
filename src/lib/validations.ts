@@ -43,3 +43,46 @@ export const changePasswordSchema = z.object({
   oldPassword: z.string().min(1, "Old password is required"),
   newPassword: z.string().min(6, "New password must be at least 6 characters"),
 });
+
+export const stylistSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().optional().nullable(),
+  email: z.string().email().optional().or(z.literal("")).nullable(),
+  imageUrl: z.string().url().optional().or(z.literal("")).nullable(),
+});
+
+export const serviceSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional().nullable(),
+  price: z.number().int().min(0, "Price must be positive"),
+  duration: z.number().int().min(1, "Duration must be at least 1 minute"),
+});
+
+export const salonScheduleSchema = z.object({
+  dayOfWeek: z.enum([
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY",
+  ]),
+  startTime: z.string().regex(timePattern, "Invalid time format"),
+  endTime: z.string().regex(timePattern, "Invalid time format"),
+});
+
+export const stylistScheduleSchema = z.object({
+  stylistId: z.string().min(1, "Stylist ID is required"),
+  dayOfWeek: z.enum([
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY",
+  ]),
+  startTime: z.string().regex(timePattern, "Invalid time format"),
+  endTime: z.string().regex(timePattern, "Invalid time format"),
+});
