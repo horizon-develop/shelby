@@ -1,7 +1,7 @@
 "use client";
 
 import { es } from "date-fns/locale";
-import { X, Trash2, Store, UserPlus, Lock, CheckCircle, UserX } from "lucide-react";
+import { X, Trash2, Store, CheckCircle, UserX } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { Dialog } from "@headlessui/react";
 import { useAppointments } from "@/hooks/useAppointments";
@@ -10,7 +10,6 @@ import { useHairdresserUnavailability } from "@/hooks/useHairdresserUnavailabili
 import { format } from "date-fns";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Stylist } from "@/types";
 import {
@@ -55,82 +54,9 @@ export default function AdminDashboard() {
 
   const router = useRouter();
 
-  // Password change state
-  const [passwordData, setPasswordData] = useState({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [passwordLoading, setPasswordLoading] = useState(false);
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-
-  // Create user state
-  const [newUserData, setNewUserData] = useState({
-    email: "",
-    name: "",
-    password: "",
-  });
-  const [createUserLoading, setCreateUserLoading] = useState(false);
-  const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
-
   const handleLogout = async () => {
     await signOut({ redirect: false });
     router.push("/");
-  };
-
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
-    setPasswordLoading(true);
-    try {
-      const res = await fetch("/api/auth/change-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          oldPassword: passwordData.oldPassword,
-          newPassword: passwordData.newPassword,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        alert("Contraseña actualizada correctamente");
-        setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
-        setIsPasswordModalOpen(false);
-      } else {
-        alert(data.message || "Error al cambiar la contraseña");
-      }
-    } catch {
-      alert("Error al cambiar la contraseña");
-    } finally {
-      setPasswordLoading(false);
-    }
-  };
-
-  const handleCreateUser = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setCreateUserLoading(true);
-    try {
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUserData),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        alert(`Usuario ${data.email} creado correctamente`);
-        setNewUserData({ email: "", name: "", password: "" });
-        setIsCreateUserModalOpen(false);
-      } else {
-        alert(data.message || "Error al crear usuario");
-      }
-    } catch {
-      alert("Error al crear usuario");
-    } finally {
-      setCreateUserLoading(false);
-    }
   };
 
   if (isLoading) {
@@ -159,20 +85,6 @@ export default function AdminDashboard() {
           >
             <Store className="mr-2" size={20} />
             Cerrar Local
-          </button>
-          <button
-            onClick={() => setIsCreateUserModalOpen(true)}
-            className="flex items-center px-3 py-2 text-[#D8C3A5] rounded-md hover:text-[#987347] transition-colors"
-          >
-            <UserPlus className="mr-2" size={20} />
-            Crear Usuario
-          </button>
-          <button
-            onClick={() => setIsPasswordModalOpen(true)}
-            className="flex items-center px-3 py-2 text-[#D8C3A5] rounded-md hover:text-[#987347] transition-colors"
-          >
-            <Lock className="mr-2" size={20} />
-            Cambiar Contraseña
           </button>
           <button
             onClick={handleLogout}
@@ -623,165 +535,6 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Change Password Modal */}
-      <Dialog
-        open={isPasswordModalOpen}
-        onClose={() => setIsPasswordModalOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded bg-[#080808] p-6 bronze-border w-full">
-            <Dialog.Title className="text-lg font-medium text-[#D8C3A5] mb-4">
-              Cambiar Contraseña
-            </Dialog.Title>
-            <form onSubmit={handleChangePassword}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-[#AE7E50] mb-2">
-                  Contraseña actual
-                </label>
-                <input
-                  type="password"
-                  required
-                  className="w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] p-2"
-                  value={passwordData.oldPassword}
-                  onChange={(e) =>
-                    setPasswordData({ ...passwordData, oldPassword: e.target.value })
-                  }
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-[#AE7E50] mb-2">
-                  Nueva contraseña
-                </label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  className="w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] p-2"
-                  value={passwordData.newPassword}
-                  onChange={(e) =>
-                    setPasswordData({ ...passwordData, newPassword: e.target.value })
-                  }
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-[#AE7E50] mb-2">
-                  Confirmar nueva contraseña
-                </label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  className="w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] p-2"
-                  value={passwordData.confirmPassword}
-                  onChange={(e) =>
-                    setPasswordData({ ...passwordData, confirmPassword: e.target.value })
-                  }
-                />
-              </div>
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsPasswordModalOpen(false);
-                    setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-[#D8C3A5]"
-                >
-                  CANCELAR
-                </button>
-                <button
-                  type="submit"
-                  disabled={passwordLoading}
-                  className="px-8 py-2 bronze-button"
-                >
-                  {passwordLoading ? "GUARDANDO" : "CAMBIAR"}
-                </button>
-              </div>
-            </form>
-          </Dialog.Panel>
-        </div>
-      </Dialog>
-
-      {/* Create User Modal */}
-      <Dialog
-        open={isCreateUserModalOpen}
-        onClose={() => setIsCreateUserModalOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded bg-[#080808] p-6 bronze-border w-full">
-            <Dialog.Title className="text-lg font-medium text-[#D8C3A5] mb-4">
-              Crear Usuario
-            </Dialog.Title>
-            <form onSubmit={handleCreateUser}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-[#AE7E50] mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  required
-                  className="w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] p-2"
-                  value={newUserData.email}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, email: e.target.value })
-                  }
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-[#AE7E50] mb-2">
-                  Nombre (opcional)
-                </label>
-                <input
-                  type="text"
-                  className="w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] p-2"
-                  value={newUserData.name}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, name: e.target.value })
-                  }
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-[#AE7E50] mb-2">
-                  Contraseña
-                </label>
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  className="w-full rounded-md border-[#D8C3A5]/20 bg-[#2A1F1B] text-[#D8C3A5] p-2"
-                  value={newUserData.password}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, password: e.target.value })
-                  }
-                />
-              </div>
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsCreateUserModalOpen(false);
-                    setNewUserData({ email: "", name: "", password: "" });
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-[#D8C3A5]"
-                >
-                  CANCELAR
-                </button>
-                <button
-                  type="submit"
-                  disabled={createUserLoading}
-                  className="px-8 py-2 bronze-button"
-                >
-                  {createUserLoading ? "CREANDO" : "CREAR"}
-                </button>
-              </div>
-            </form>
-          </Dialog.Panel>
-        </div>
-      </Dialog>
     </div>
   );
 }
