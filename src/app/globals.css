@@ -70,6 +70,21 @@ body {
   font-weight: bold;
 }
 
+/* Override default blue on nav buttons and chevrons */
+.rdp-root button svg {
+  fill: #AE7E50 !important;
+  color: #AE7E50 !important;
+}
+
+.rdp-root .rdp-button_previous,
+.rdp-root .rdp-button_next {
+  color: #AE7E50 !important;
+}
+
+.rdp-root .rdp-chevron {
+  fill: #AE7E50 !important;
+}
+
 /* Efectos de brillo cobrizo */
 @layer utilities {
   .bronze-glow {
