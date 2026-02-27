@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// Admin user (simple credentials auth, no role enum)
+// ============================================================
+
+model User {
+  id           String   @id @default(cuid())
+  name         String?
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("users")
+}
+
+// ============================================================
+// Enums
+// ============================================================
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+// ============================================================
+// Business models
+// ============================================================
+
+model Stylist {
+  id       String  @id @default(cuid())
+  name     String
+  phone    String?
+  email    String?
+  imageUrl String?
+  isActive Boolean @default(true)
+  order    Int     @default(0)
+
+  services  ServiceStylist[]
+  schedules StylistSchedule[]
+  absences  StylistAbsence[]
+  bookings  Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  price       Int // price in ARS cents (e.g., 2000000 = $20,000)
+  duration    Int // duration in minutes (e.g., 30, 45, 60)
+  isActive    Boolean @default(true)
+  order       Int     @default(0)
+
+  stylists ServiceStylist[]
+  bookings Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServiceStylist {
+  id        String @id @default(cuid())
+  serviceId String
+  stylistId String
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  stylist Stylist @relation(fields: [stylistId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, stylistId])
+}
+
+// ============================================================
+// Salon schedule (recurring weekly)
+// Multiple rows per day allowed (e.g., 09:00-13:00 + 15:00-21:00)
+// ============================================================
+
+model SalonSchedule {
+  id        String    @id @default(cuid())
+  dayOfWeek DayOfWeek
+  startTime String // "HH:mm" format
+  endTime   String // "HH:mm" format
+  isActive  Boolean   @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dayOfWeek])
+}
+
+// ============================================================
+// Stylist schedule (recurring weekly, per stylist)
+// Multiple rows per day allowed
+// No rows for a day = stylist does not work that day
+// ============================================================
+
+model StylistSchedule {
+  id        String    @id @default(cuid())
+  stylistId String
+  dayOfWeek DayOfWeek
+  startTime String // "HH:mm" format
+  endTime   String // "HH:mm" format
+
+  stylist Stylist @relation(fields: [stylistId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stylistId, dayOfWeek])
+}
+
+// ============================================================
+// Salon closures (date-specific)
+// null startTime/endTime = all day closure
+// ============================================================
+
+model SalonClosure {
+  id        String   @id @default(cuid())
+  date      DateTime @db.Date
+  startTime String? // null = all day; "HH:mm" = partial
+  endTime   String? // null = all day; "HH:mm" = partial
+  reason    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+}
+
+// ============================================================
+// Stylist absences (date-specific)
+// null startTime/endTime = all day absence
+// ============================================================
+
+model StylistAbsence {
+  id        String   @id @default(cuid())
+  stylistId String
+  date      DateTime @db.Date
+  startTime String? // null = all day
+  endTime   String? // null = all day
+  reason    String?
+
+  stylist Stylist @relation(fields: [stylistId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stylistId, date])
+}
+
+// ============================================================
+// Bookings (guest booking)
+// ============================================================
+
+model Booking {
+  id            String        @id @default(cuid())
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  date          DateTime      @db.Date
+  startTime     String // "HH:mm" format
+  endTime       String // "HH:mm" format (startTime + service.duration)
+  status        BookingStatus @default(CONFIRMED)
+  notes         String?
+
+  serviceId String
+  stylistId String
+
+  service Service @relation(fields: [serviceId], references: [id])
+  stylist Stylist @relation(fields: [stylistId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date, stylistId])
+  @@index([date, status])
+  @@index([customerPhone])
+}

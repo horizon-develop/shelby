@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+
+  --color-primary-light: #AF9A70;
+  --color-primary-dark: #000000;
+  --color-background-light: #000000;
+  --color-background-dark: #080808;
+  --color-text-light: #080808;
+  --color-text-dark: #EEEEDE;
+  --color-accent-light: #CACABC;
+  --color-accent-dark: #242424;
+  --color-navy: #1B2845;
+}
+
+@layer base {
+  input[type="time"]::-webkit-calendar-picker-indicator,
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+body {
+  @apply antialiased;
+}
+
+/* react-day-picker v9 styles */
+.rdp-root {
+  --rdp-accent-color: #AE7E50;
+  --rdp-accent-background-color: #AE7E50;
+  --rdp-day-height: 40px;
+  --rdp-day-width: 40px;
+  --rdp-day_button-border-radius: 9999px;
+  --rdp-selected-border: none;
+  margin: 0;
+}
+
+.rdp-selected {
+  font-weight: normal;
+  font-size: inherit;
+}
+
+.rdp-selected .rdp-day_button {
+  background-color: #AE7E50 !important;
+  color: black !important;
+  border-radius: 9999px !important;
+}
+
+.rdp-selected:hover .rdp-day_button {
+  background-color: #AE7E50 !important;
+  opacity: 0.8;
+}
+
+.rdp-day:hover:not(.rdp-selected) .rdp-day_button {
+  background-color: #161D2D;
+}
+
+.rdp-today:not(.rdp-selected) .rdp-day_button {
+  color: #AE7E50;
+  font-weight: bold;
+}
+
+/* Efectos de brillo cobrizo */
+@layer utilities {
+  .bronze-glow {
+    box-shadow: 0 0 15px 2px rgba(182, 131, 80, 0.3);
+  }
+
+  .bronze-border {
+    border-color: #b68350;
+    box-shadow: 0 0 10px 1px rgba(182, 131, 80, 0.2);
+  }
+
+  .bronze-button {
+    @apply bg-[#BE844B] text-black font-medium rounded-md transition-all duration-300;
+    box-shadow: 0 0 15px 2px rgba(182, 131, 80, 0.3);
+  }
+
+  .bronze-button:hover {
+    @apply bg-[#987347];
+    box-shadow: 0 0 20px 4px rgba(182, 131, 80, 0.4);
+  }
+
+  .bronze-button:disabled {
+    @apply opacity-50;
+    box-shadow: none;
+  }
+}
